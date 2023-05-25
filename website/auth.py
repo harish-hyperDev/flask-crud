@@ -1,11 +1,9 @@
-from flask import Blueprint
+from .app import app
 
-auth = Blueprint('auth', __name__)
-
-@auth.route('/login')
+@app.route('/login')
 def login():
     return "<p>Login</p>"
 
-@auth.route('/logout')
+@app.route('/logout')
 def logout():
     return "<p>Logout</p>"
