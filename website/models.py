@@ -6,10 +6,9 @@ class UserAccount(db.Model):
     username=db.Column(db.String(255), nullable=False)
     email=db.Column(db.String(255), nullable=False)
     password=db.Column(db.String(255), nullable=False)
-    confirm_password=db.Column(db.String(255), nullable=False)
     
     def __repr__(self):
-        return f'User("{self.id}","{self.first_name}","{self.last_name}","{self.email}","{self.username}")'
+        return f'User("{self.id}","{self.full_name}","{self.username}","{self.email}")'
     
 # create admin Class
 class AdminAccount(db.Model):
@@ -17,7 +16,6 @@ class AdminAccount(db.Model):
     username=db.Column(db.String(255), nullable=False)
     email=db.Column(db.String(255), nullable=False)
     password=db.Column(db.String(255), nullable=False)
-    confirm_password=db.Column(db.String(255), nullable=False)
     
     def __repr__(self):
         return f'Admin("{self.id}","{self.username}","{self.email}")'
