@@ -8,3 +8,7 @@ from .app import app
 def index():
     return  render_template('base.html')
 
+@app.route('/home')
+def home():
+    return render_template('user/welcome.html')
+
