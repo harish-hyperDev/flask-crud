@@ -3,8 +3,9 @@ from flask_admin import Admin
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin.contrib.sqla import ModelView
 
-from config import Config
+from .config import Config
 from .users.main import users
+from .models import UserAccount, AdminAccount
 
 
 app = Flask(__name__)
@@ -14,6 +15,8 @@ app.config.from_object(Config)
 app.register_blueprint(users, url_prefix='/home')
 
 db = SQLAlchemy(app)
+# db.create_all()
+
 admin = Admin(app, name='CRUD APP', template_mode='bootstrap4')
 
 

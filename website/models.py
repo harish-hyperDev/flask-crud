@@ -1,6 +1,6 @@
-from .app import db
+from website.app import db
 
-class User(db.Model):
+class UserAccount(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     first_name=db.Column(db.String(255), nullable=False)
     last_name=db.Column(db.String(255), nullable=False)
@@ -14,7 +14,7 @@ class User(db.Model):
         return f'User("{self.id}","{self.first_name}","{self.last_name}","{self.email}","{self.username}")'
     
 # create admin Class
-class Admin(db.Model):
+class AdminAccount(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     username=db.Column(db.String(255), nullable=False)
     email=db.Column(db.String(255), nullable=False)
