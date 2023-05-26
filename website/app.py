@@ -9,9 +9,9 @@ from .users.main import users
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.register_blueprint(users, url_prefix='/home')
 
 # localhost:5000/home
-app.register_blueprint(users, url_prefix='/home')
 
 db = SQLAlchemy(app)
 from .models import UserAccount, AdminAccount
