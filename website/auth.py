@@ -15,6 +15,9 @@ def validations(form_dict):
     print("errors dict : ", form_dict)
     
     for key in form_dict.keys():
+        print("password : ", form_dict['password'])
+        if form_dict['password'] != form_dict['confirm_password']:
+            errors_dict['confirm_password'] = "Passwords do not match!"
         if form_dict[key].strip() == "":
             errors_dict[key] = "This above field is invalid!"
     
@@ -25,18 +28,13 @@ def validations(form_dict):
 def register():
     if request.method == "POST":
         
-        
-        print("GOT POST")
-        print("printing form : ", request.form.to_dict())
-        # full_name = request.form.get
-        print("Full name is : ", request.form.get('full_name'))
-        
         register_fields = request.form.to_dict()
+        print("form_data ", register_fields)
         
         errors = validations(register_fields)
         
         if errors:
-            return render_template('register.html', errors = errors)
+            return render_template('register.html', errors = errors, form_data = register_fields)
         else:
             user = UserAccount(
                         full_name = register_fields['full_name'],
