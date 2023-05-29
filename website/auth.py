@@ -29,8 +29,6 @@ def register():
     if request.method == "POST":
         
         register_fields = request.form.to_dict()
-        print("form_data ", register_fields)
-        
         errors = validations(register_fields)
         
         if errors:
