@@ -1,11 +1,9 @@
 from flask import request, render_template
 
-from .app import app
+from .app import app, db
 from .models import UserAccount
 
-@app.route('/login')
-def login():
-    return render_template("login.html")
+
 
 
 # need to add validations
@@ -23,12 +21,24 @@ def validations(form_dict):
     
     return errors_dict
 
+def form_to_dict(form_data):
+    return form_data.to_dict()
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        login_fields = form_to_dict(request.form)
+        
+    
+    return render_template("login.html")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
         
-        register_fields = request.form.to_dict()
+        register_fields = form_to_dict(request.form)
+        print(register_fields)
         errors = validations(register_fields)
         
         if errors:
@@ -42,6 +52,8 @@ def register():
                     )
             
             # user.save()
+            db.session.add(user)
+            db.session.commit()
             print("User has been successfully registered!")
     
     return render_template("register.html")

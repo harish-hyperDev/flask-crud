@@ -16,6 +16,7 @@ app.register_blueprint(users, url_prefix='/home')
 db = SQLAlchemy(app)
 from .models import UserAccount, AdminAccount
 
+
 app.app_context().push()
 db.create_all()
 
