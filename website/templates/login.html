@@ -41,22 +41,28 @@
 
                                     <form class="mx-1 mx-md-4" action="" method="POST">
                                         <div class="form-group mt-2 mb-lg-4">
-                                            <!-- <label for="form_email">Email</label> -->
-                                            <input type="text" class="form-control" name="email_id" id="form_email" placeholder="Your Email"/>
+                                            {% if form_data %}
+                                                <input type="text" class="form-control" name="email_id" id="form_email" placeholder="Your Email" value="{{ form_data['email_id'] }}"/>
+                                            {% else %}
+                                                <input type="email" class="form-control" name="email_id" id="form_email" placeholder="Your Email"/>
+                                            {% endif %}
+
+                                            {% if errors %}
+                                                <span class="error-message"> {{ errors['email_id'] }} </span>
+                                            {% endif %}
                                         </div>
 
                                         <div class="form-group mt-2 mb-lg-4">
-                                            <!-- <label for="form_password">Password</label> -->
-                                            <input type="password" class="form-control" name="password" id="form_password" placeholder="Your Password"/>
+                                            {% if form_data %}
+                                                <input type="password" class="form-control" name="password" id="form_password" placeholder="Your Password" value="{{ form_data['password'] }}"/>
+                                            {% else %}
+                                                <input type="password" class="form-control" name="password" id="form_password" placeholder="Your Password"/>
+                                            {% endif %}
+                                            
+                                            {% if errors %}
+                                                <span class="error-message"> {{ errors['password'] }} </span>
+                                            {% endif %}
                                         </div>
-                                        
-
-                                        {% if errors %}
-                                            <div class="form-group mt-2 mb-lg-4">
-                                                <!-- <label for="form_password">Password</label> -->
-                                                <span class="error-message">Not Valid</span>
-                                            </div>
-                                        {% endif %}
 
                                         <!-- <div class="d-flex justify-content-center mx-4 mt-5 mb-3 mb-lg-4"> -->
                                         <div class="form-group d-flex">
