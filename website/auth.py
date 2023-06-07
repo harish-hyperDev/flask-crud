@@ -47,7 +47,7 @@ def check_login(form_data):
         if user_email_exists.password == form_data['password']:
             login_user(user_email_exists)
             
-            return True
+            return True, "user"
         else:
             login_errors['password'] = "Invalid Password!"
             return login_errors
@@ -56,7 +56,7 @@ def check_login(form_data):
         if admin_email_exists.password == form_data['password']:
             login_user(admin_email_exists)
             
-            return True
+            return True, "admin"
         else:
             login_errors['password'] = "Invalid Password!"
             return login_errors
@@ -74,13 +74,18 @@ def login():
     if request.method == "POST":
         login_fields = form_to_dict(request.form)
         
-        login_valid = check_login(login_fields)
+        login_valid, user_type = check_login(login_fields)
         
         if login_valid == True:
             print("Login is valid")
             print(login_valid)
             
-            return redirect(url_for('home'))
+            if user_type == "user":
+                return redirect(url_for('home'))
+            else:
+                users = UserAccount.query.all()
+                return render_template("admin/home.html", tx="hello", users=users)  # admin/home
+            
         else:
             return render_template('login.html', errors = login_valid, form_data = login_fields)
         

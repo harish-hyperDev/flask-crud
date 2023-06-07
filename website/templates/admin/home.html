@@ -1,5 +1,28 @@
 {% extends 'base.html' %}
 
 {% block home_block %}
-    <h1>Welcome Admin!!</h1>
+    <h1>Welcome {{ tx }}</h1>
+    <table style="border: 1px solid black;">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--
+            {% for user in users %}
+            <tr>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+            </tr>
+            {% endfor %}
+            -->
+        </tbody>
+    </table>
+    <script type="text/javascript">
+          console.log("{{users}}")
+    </script>
 {% endblock %}
