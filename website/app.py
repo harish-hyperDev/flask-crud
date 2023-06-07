@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, session
 from flask_admin import Admin
-from flask_login import LoginManager, UserMixin
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_admin.contrib.sqla import ModelView
+# from flask_admin.contrib.sqla import ModelView
 
 from .config import Config
 from .users.main import users
@@ -23,9 +23,12 @@ from .models import UserAccount, AdminAccount
 
 @login_manager.user_loader
 def load_user(user_id):
-    print("\n LOADING USER \n")
     # since the user_id is just the primary key of our user table, use it in the query for the user
-    return UserAccount.query.get(int(user_id))
+    user = UserAccount.query.get(user_id)
+    if user:
+        return user
+    else:
+        return AdminAccount.query.get(user_id)
 
 
 app.app_context().push()

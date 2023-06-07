@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, session
 from flask_login import login_required, current_user
 
 from .app import app
@@ -12,5 +12,12 @@ def index():
 
 @app.route('/home')
 def home():
-    return render_template('user/welcome.html')
+    print("current user : ", current_user.username)
+    return render_template('user/home.html')
+
+# route for admin home page
+@app.route('/admin/home')
+@login_required
+def admin_home():
+    return render_template('admin/home.html')
 
