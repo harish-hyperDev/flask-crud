@@ -23,6 +23,7 @@
         border: 0px !important;
         background-color: transparent;
         color: #222 !important;
+        text-decoration: none !important;
     }
 
     .delete-hover{
@@ -44,7 +45,8 @@
                 <th scope="col">Full Name</th>
                 <th scope="col">Username</th>
                 <th scope="col">Email</th>
-                <th scope="col">Options</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Edit</th>
             </tr>
         </thead>
         <tbody class="table-body" style="border: 1px solid black;">
@@ -93,7 +95,7 @@
                             <td>${formatData[i]['username']}</td>
                             <td>${formatData[i]['email']}</td>
                             <td>
-                                <a  class="fa-solid fa-trash delete-icon"
+                                <a  class="fa-solid fa-trash delete-icon d-flex justify-content-center"
                                     href="#Delete${i}"
                                     data-toggle="collapse"
                                     id=${formatData[i]['id']} 
@@ -102,15 +104,19 @@
                                     onclick="handleDeleteHover(event, ${i})"
                                 </a>
                             </td>
+                            <td>
+                                <i href="#" class="fa-solid fa-pen-to-square d-flex justify-content-center" style="color: #222;"></i>
+                            </td>
                         </tr>`
                     )
                 $('.users-table')
                     .after(
                         `<div id="Delete${i}" class="collapse delete-hover">
                             <div>Are you sure want to delete <strong>${formatData[i]['username']} ?</strong></div>
-                            <button name=id value=${formatData[i]['id']} onclick="handleDelete(event)">Yes</button>
+                            <button name=delete_id value=${formatData[i]['id']} onclick="handleDelete(event)">Yes</button>
                             <button type="button" role="button" onclick="closeDeleteHover(event, ${i})">No</button>
-                        </div>`
+                        </div>
+                        `
                     )
             }
         })

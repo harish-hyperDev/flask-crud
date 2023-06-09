@@ -1,4 +1,4 @@
-from flask import render_template, session, request
+from flask import render_template, session, request, redirect, url_for
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
 
@@ -26,14 +26,24 @@ def home():
 def admin_home():
     if AdminAccount.query.get(current_user.id):
         if request.method == "POST":
+            if 'delete_id' in request.form.to_dict().keys():
+                userid_to_delete = request.form.to_dict()['delete_id']
+                UserAccount.query.filter_by(id=userid_to_delete).delete()
+                print("here")
+                db.session.commit()
+                
+            if 'edit_id' in request.form.to_dict().keys():
+                userid_to_edit = request.form.to_dict()['edit_id']
+                session['edit_id'] = userid_to_edit
+                
+                return redirect(url_for('edit-user'))
             
-            userid_to_delete = request.form.to_dict()['id']
-            UserAccount.query.filter_by(id=userid_to_delete).delete()
-            print("here")
-            db.session.commit()
                 
             return render_template('admin/home.html')
             
         else:
             return render_template('admin/home.html')
 
+@app.route('/edit-user', methods=['GET', 'POST'])
+def edit_user():
+    return render_template('admin/edit_user.html')
