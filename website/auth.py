@@ -1,4 +1,4 @@
-from flask import request, render_template, redirect, url_for, flash
+from flask import request, render_template, redirect, url_for, flash, jsonify, session
 from flask_login import login_user, login_required, current_user, logout_user
 from flask_uuid import uuid
 
@@ -83,8 +83,9 @@ def login():
             if user_type == "user":
                 return redirect(url_for('home'))
             else:
-                users = UserAccount.query.all()
-                return render_template("admin/home.html", tx="hello", users=users)  # admin/home
+                # users = UserAccount.query.all()
+                # return render_template("admin/home.html")  # admin/home
+                return redirect(url_for('admin_home'))
             
         else:
             return render_template('login.html', errors = login_valid, form_data = login_fields)
@@ -120,7 +121,6 @@ def register():
             db.session.commit()
             
             
-            
             print("User has been successfully registered!")
             
             time.sleep(3)
@@ -135,3 +135,24 @@ def register():
 def logout():
     logout_user()
     return "account has been logged out"
+
+
+@app.route('/get_users', methods=['GET'])
+def get_users():
+    users = UserAccount.query.all()
+    users_dict = []
+    
+    for user in users:
+        d = {}
+        d["id"] = user.id
+        d["username"] = user.username
+        d["full_name"] = user.full_name
+        d["email"] = user.email
+        
+        users_dict.append(d)
+        
+        
+    import json
+    return jsonify(json.dumps(users_dict))
+    
+    # return users

@@ -2,6 +2,8 @@ from flask import Flask, session
 from flask_admin import Admin
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+
+from flask_toastr import Toastr
 # from flask_admin.contrib.sqla import ModelView
 
 from .config import Config
@@ -15,6 +17,8 @@ app.register_blueprint(users, url_prefix='/home')
 # localhost:5000/home
 
 db = SQLAlchemy(app)
+toastr = Toastr(app)
+
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.init_app(app)
