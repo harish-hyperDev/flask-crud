@@ -6,16 +6,24 @@ import time
 from .models import User
 from .app import app, db
 
-# route for admin home page
+
+# route for listing users page
 @app.route('/', methods=['GET', 'POST'])
 def admin_home():
     if request.method == "POST":
+        
+        '''
+        Delete the user if the request.form contains "delete_id" and save changes to database
+        '''
         if 'delete_id' in request.form.to_dict().keys():
             userid_to_delete = request.form.to_dict()['delete_id']
             User.query.filter_by(id=userid_to_delete).delete()
             print("here")
             db.session.commit()
-            
+        
+        '''
+        Edit the user if the request.form contains "edit_id" based on the id of selected user
+        '''
         if 'edit_id' in request.form.to_dict().keys():
             print(request.form.to_dict()['edit_id'])
             userid_to_edit = request.form.to_dict()['edit_id']
@@ -30,6 +38,7 @@ def admin_home():
         return render_template('/home.html')
 
 
+# route for adding new user(s)
 @app.route('/add-user', methods=['GET', 'POST'])
 def add_user():
     if request.method == "POST":
@@ -42,14 +51,13 @@ def add_user():
         
         else:
             user = User(
-                        id = uuid.uuid4().hex,      # for unique user id
+                        id = uuid.uuid4().hex,      # for generating unique user id
                         full_name = register_fields['full_name'],
                         username = register_fields['username'],
                         email = register_fields['email_id'],
                         password = register_fields['password']
                     )
             
-            # user.save()
             db.session.add(user)
             db.session.commit()
             
@@ -59,6 +67,7 @@ def add_user():
     return render_template("add_user.html")
 
 
+# route for editing existing user(s)
 @app.route('/edit-user', methods=['GET', 'POST'])
 def edit_user():
     edit_id = request.args.get('edit_id')
@@ -94,9 +103,8 @@ def edit_user():
                                 email_id = edit_user_data.email)
         
 
-# need to add validations
+# validations to be perfromed on creating new User
 def validations(form_dict):
-    errors_list = []
     errors_dict = {}
     
     email_exists = User.query.filter_by(email = form_dict['email_id']).first()

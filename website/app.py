@@ -1,7 +1,7 @@
 from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 
-from .config import Config
+from website.config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
