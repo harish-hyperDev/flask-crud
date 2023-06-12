@@ -1,5 +1,5 @@
-from flask import request, render_template, redirect, url_for, flash, jsonify, session
-from flask_login import login_user, login_required, current_user, logout_user
+from flask import request, render_template, redirect, url_for, jsonify, session
+from flask_login import login_user, login_required, logout_user
 from flask_uuid import uuid
 
 from .app import app, db
@@ -18,7 +18,6 @@ def validations(form_dict):
     
     
     for key in form_dict.keys():
-        print("password : ", form_dict['password'])
         if form_dict['password'] != form_dict['confirm_password']:
             errors_dict['confirm_password'] = "Password mismatch!"
         if form_dict[key].strip() == "":
@@ -47,25 +46,25 @@ def check_login(form_data):
         if user_email_exists.password == form_data['password']:
             login_user(user_email_exists)
             
-            return True, "user"
+            return None, True, "user"
         else:
             login_errors['password'] = "Invalid Password!"
-            return login_errors
+            return login_errors, False, None
         
     elif admin_email_exists:
         if admin_email_exists.password == form_data['password']:
             login_user(admin_email_exists)
             
-            return True, "admin"
+            return None, True, "admin"
         else:
             login_errors['password'] = "Invalid Password!"
-            return login_errors
+            return login_errors, False, None
         
     else:
         login_errors['email_id'] = "Invalid Email Address!"
         login_errors['password'] = "Invalid Password!"
         
-        return login_errors
+        return login_errors, False, None
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -74,21 +73,17 @@ def login():
     if request.method == "POST":
         login_fields = form_to_dict(request.form)
         
-        login_valid, user_type = check_login(login_fields)
+        errors, login_valid, user_type = check_login(login_fields)
         
         if login_valid == True:
-            print("Login is valid")
-            print(login_valid)
             
             if user_type == "user":
                 return redirect(url_for('home'))
             else:
-                # users = UserAccount.query.all()
-                # return render_template("admin/home.html")  # admin/home
                 return redirect(url_for('admin_home'))
             
         else:
-            return render_template('login.html', errors = login_valid, form_data = login_fields)
+            return render_template('login.html', errors = errors, form_data = login_fields)
         
     
     return render_template("login.html")
@@ -98,18 +93,15 @@ def login():
 def register():
     if request.method == "POST":
         
-        
         register_fields = form_to_dict(request.form)
-        print(register_fields)
         errors = validations(register_fields)
-        
-        print(register_fields['email_id'])
         
         if errors:
             return render_template('register.html', errors = errors, form_data = register_fields)
+        
         else:
             user = UserAccount(
-                        id = uuid.uuid4().hex,
+                        id = uuid.uuid4().hex,      # for unique user id
                         full_name = register_fields['full_name'],
                         username = register_fields['username'],
                         email = register_fields['email_id'],
@@ -120,12 +112,8 @@ def register():
             db.session.add(user)
             db.session.commit()
             
-            
-            print("User has been successfully registered!")
-            
             time.sleep(3)
             return redirect(url_for('login'))
-
     
     return render_template("register.html")
 

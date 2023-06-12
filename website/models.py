@@ -19,4 +19,4 @@ class AdminAccount(db.Model, UserMixin):
     password=db.Column(db.String(255), nullable=False)
     
     def __repr__(self):
-        return f'Admin("{self.id}","{self.username}","{self.email}")'
+        return f'Admin("{self.id}","{self.username}","{self.email}","{self.password}")'

@@ -1,1 +1,138 @@
 {% extends "base.html" %}
+
+{% block home_block %}
+<style>
+  .error-message {
+    color: red;
+    font-size: 14px;
+  }
+
+</style>
+<section class="vh-100" style="background-color: #eee;">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body"> <!-- p-md-5 -->
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+  
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Edit User</p>
+  
+                  <form class="mx-1 mx-md-4" action="" method="POST">
+
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-user fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form_full_name">Full Name</label>
+                        {% if form_data %}
+                          <input type="text" name="full_name" id="form_full_name" class="form-control" value="{{ form_data['full_name'] }}" >
+                        {% else %}
+                          <input type="text" name="full_name" id="form_full_name" class="form-control" />
+                        {% endif %}
+
+                        {% if errors %}
+                          <span class='error-message'>{{ errors['full_name'] }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-user fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form_username">Username</label>
+                        {% if form_data %}
+                          <input type="text" name="username" id="form_username" class="form-control" value="{{ form_data['username'] }}">
+                        {% else %}
+                          <input type="text" name="username" id="form_username" class="form-control" />
+                        {% endif %}
+                        {% if errors %}
+                          <span class='error-message'>{{ errors['username'] }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-envelope fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form_email_id">Your Email</label>
+                        {% if form_data %}
+                          <input type="email" name="email_id" id="form_email_id" class="form-control" value="{{ form_data['email_id'] }}">
+                        {% else %}
+                          <input type="email" name="email_id" id="form_email_id" class="form-control" />
+                        {% endif %}
+                        {% if errors %}
+                          <span class='error-message'>{{ errors['email_id'] }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-lock fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form_password">Password</label>
+                        {% if form_data %}
+                          <input type="password" name="password" id="form_password" class="form-control" value="{{ form_data['password'] }}">
+                        {% else %}
+                          <input type="password" name="password" id="form_password" class="form-control" />
+                        {% endif %}
+                        {% if errors %}
+                          <span class='error-message'>{{ errors['password'] }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-key fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form_confirm_password">Repeat your password</label>
+                        {% if form_data %}
+                          <input type="password" name="confirm_password" id="form_confirm_password" class="form-control" value="{{ form_data['confirm_password'] }}">
+                        {% else %}
+                          <input type="password" name="confirm_password" id="form_confirm_password" class="form-control" />
+                        {% endif %}
+                        {% if errors %}
+                          <span class='error-message'>{{ errors['confirm_password'] }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+  
+                    <!-- <div class="form-check d-flex justify-content-center mb-5">
+                      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                      <label class="form-check-label" for="form2Example3">
+                        I agree all statements in <a href="#!">Terms of service</a>
+                      </label>
+                    </div> -->
+  
+                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      <button type="submit" class="btn btn-primary btn-lg">Update</button>
+                    </div>
+  
+                  </form>
+  
+                </div>
+
+                <!--
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+  
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                    class="img-fluid" alt="Sample image">
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      {% for message in msessages %}
+                        <p>{{ message }}</p>
+                      {% endfor %}
+
+                    {% endif %}
+                  {% endwith %}
+                </div>
+                -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

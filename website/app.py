@@ -34,6 +34,9 @@ def load_user(user_id):
     else:
         return AdminAccount.query.get(user_id)
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    return "<h3>You're not authorized to view this page!</h3>"
 
 app.app_context().push()
 db.create_all()

@@ -43,6 +43,8 @@ def admin_home():
             
         else:
             return render_template('admin/home.html')
+    else:
+        return "<h3>You're not authenticated to view this page!</h3>"
 
 @app.route('/edit-user', methods=['GET', 'POST'])
 def edit_user():
