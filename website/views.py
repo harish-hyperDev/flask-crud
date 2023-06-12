@@ -1,5 +1,4 @@
 from flask import render_template, session, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 from flask_uuid import uuid
 
 import time
@@ -31,6 +30,69 @@ def admin_home():
         return render_template('/home.html')
 
 
+@app.route('/add-user', methods=['GET', 'POST'])
+def add_user():
+    if request.method == "POST":
+        
+        register_fields = request.form.to_dict()
+        errors = validations(register_fields)
+        
+        if errors:
+            return render_template('add_user.html', errors = errors, form_data = register_fields)
+        
+        else:
+            user = User(
+                        id = uuid.uuid4().hex,      # for unique user id
+                        full_name = register_fields['full_name'],
+                        username = register_fields['username'],
+                        email = register_fields['email_id'],
+                        password = register_fields['password']
+                    )
+            
+            # user.save()
+            db.session.add(user)
+            db.session.commit()
+            
+            time.sleep(3)
+            return redirect(url_for('admin_home'))
+    
+    return render_template("add_user.html")
+
+
+@app.route('/edit-user', methods=['GET', 'POST'])
+def edit_user():
+    edit_id = request.args.get('edit_id')
+    edit_user_data = User.query.filter_by(id=edit_id).first()
+    
+    if request.method == "POST":
+        form_data = request.form.to_dict()
+        print(form_data)
+        errors = edit_user_validations(form_data)
+        print(errors)
+        
+        if errors:
+            return render_template('edit_user.html', 
+                                    full_name = form_data['full_name'],
+                                    username = edit_user_data.username,
+                                    email_id = edit_user_data.email,
+                                    password = form_data['password'],
+                                    confirm_password = form_data['confirm_password'],
+                                    errors = errors)
+        else:
+            edit_user_data.full_name = form_data['full_name']
+            edit_user_data.password = form_data['password']
+            edit_user_data.confirm_password = form_data['confirm_password']
+            
+            db.session.commit()
+            time.sleep(2)
+            return redirect(url_for('admin_home'))
+    
+    else:
+        return render_template('edit_user.html', 
+                                full_name = edit_user_data.full_name,
+                                username = edit_user_data.username,
+                                email_id = edit_user_data.email)
+        
 
 # need to add validations
 def validations(form_dict):
@@ -56,44 +118,16 @@ def validations(form_dict):
     return errors_dict
 
 
-def form_to_dict(form_data):
-    return form_data.to_dict()
+def edit_user_validations(form_dict):
+    errors_dict = {}
 
-
-@app.route('/add-user', methods=['GET', 'POST'])
-def register():
-    if request.method == "POST":
-        
-        register_fields = form_to_dict(request.form)
-        errors = validations(register_fields)
-        
-        if errors:
-            return render_template('add_user.html', errors = errors, form_data = register_fields)
-        
-        else:
-            user = User(
-                        id = uuid.uuid4().hex,      # for unique user id
-                        full_name = register_fields['full_name'],
-                        username = register_fields['username'],
-                        email = register_fields['email_id'],
-                        password = register_fields['password']
-                    )
+    for key in form_dict.keys():
+        if form_dict['password'] != form_dict['confirm_password']:
+            errors_dict['confirm_password'] = "Password mismatch!"
             
-            # user.save()
-            db.session.add(user)
-            db.session.commit()
+        if form_dict[key].strip() == "":
+            errors_dict[key] = "This above field is invalid!"
             
-            time.sleep(3)
-            return redirect(url_for('home'))
-    
-    return render_template("add_user.html")
+    return errors_dict
 
 
-
-@app.route('/edit-user', methods=['GET', 'POST'])
-def edit_user():
-    print('editing begins')
-    edit_id = request.args.get('edit_id')
-    edit_user_data = User.query.filter_by(id=edit_id).first()
-    print(edit_user_data)
-    return render_template('admin/edit_user.html', full_name = edit_user_data.full_name)

@@ -1,10 +1,9 @@
-from flask import request, render_template, redirect, url_for, jsonify, session
-from flask_uuid import uuid
+from flask import jsonify
+import json
 
-from .app import app, db
+from .app import app
 from .models import User
 
-import time
 
 @app.route('/get_users', methods=['GET'])
 def get_users():
@@ -20,8 +19,18 @@ def get_users():
         
         users_dict.append(d)
         
-        
-    import json
     return jsonify(json.dumps(users_dict))
+
+@app.route('/get_user/<uid>', methods=['GET'])
+def get_user_by_id(uid):
+    user = User.query.filter_by( id = uid ).first()
+    user_dict = {}
+    if user:
+        user_dict['id'] = user.id
+        user_dict['username'] = user.username
+        user_dict['full_name'] = user.full_name
+        user_dict["email"] = user.email
+    
+    return jsonify(json.dumps(user_dict))
     
     # return users

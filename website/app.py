@@ -2,14 +2,11 @@ from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 
 from .config import Config
-from .users.main import users
-
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.register_blueprint(users, url_prefix='/home')
 
-# localhost:5000/home
+# session['API_KEY'] = "flask-insecure?da471aa9-ac0b-4cee-a572-33cbae58043a"
 
 db = SQLAlchemy(app)
 

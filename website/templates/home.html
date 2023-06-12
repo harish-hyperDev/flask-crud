@@ -35,28 +35,53 @@
     padding: 10px;
   }
 
+  .add-user {
+    border: 1px solid #28a745;
+    color: #fff;
+    background-color: #28a745;
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 10px;
+    max-width: 6rem;
+    margin-left: auto;
+    margin-right: 20px;
+    text-decoration: none;
+  }
+
+  .add-user:hover {
+    color: #fff !important;
+    text-decoration: underline !important;
+  }
   .delete-hover>button {
     margin: 10px 0px;
   }
+  .parent-div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
 </style>
 
-<a href="{{ url_for('add_user') }}">Add User</a>
-<form class="admin-body" method="POST" id="admin-form">
-  <table style="border: 1px solid black;" class="table users-table">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Full Name</th>
-        <th scope="col">Username</th>
-        <th scope="col">Email</th>
-        <th scope="col">Delete</th>
-        <th scope="col">Edit</th>
-      </tr>
-    </thead>
-    <tbody class="table-body" style="border: 1px solid black;">
-      <!-- Dynamically filled with JS -->
-    </tbody>
-  </table>
-</form>
+<div class="parent-div">
+  <a class="add-user" href="{{ url_for('add_user') }}">Add User</a>
+  <form class="admin-body" method="POST" id="admin-form">
+
+    <table style="border: 1px solid black;" class="table users-table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Full Name</th>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Delete</th>
+          <th scope="col">Edit</th>
+        </tr>
+      </thead>
+      <tbody class="table-body" style="border: 1px solid black;">
+        <!-- Dynamically filled with JS -->
+      </tbody>
+    </table>
+  </form>
+</div>
 
 <script>
   var toggledDelete;

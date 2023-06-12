@@ -28,9 +28,8 @@
                         {% if form_data %}
                           <input type="text" name="full_name" id="form_full_name" class="form-control" value="{{ form_data['full_name'] }}" >
                         {% else %}
-                          <input type="text" name="full_name" id="form_full_name" class="form-control" />
+                          <input type="text" name="full_name" id="form_full_name" class="form-control" value="{{ full_name }}" >
                         {% endif %}
-
                         {% if errors %}
                           <span class='error-message'>{{ errors['full_name'] }}</span>
                         {% endif %}
@@ -41,14 +40,8 @@
                       <i class="fas fa-user fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
                       <div class="form-outline flex-fill mb-0">
                         <label class="form-label" for="form_username">Username</label>
-                        {% if form_data %}
-                          <input type="text" name="username" id="form_username" class="form-control" value="{{ form_data['username'] }}">
-                        {% else %}
-                          <input type="text" name="username" id="form_username" class="form-control" />
-                        {% endif %}
-                        {% if errors %}
-                          <span class='error-message'>{{ errors['username'] }}</span>
-                        {% endif %}
+
+                        <input type="text" id="form_username" class="form-control" value="{{ username }}" disabled>
                       </div>
                     </div>
   
@@ -56,14 +49,8 @@
                       <i class="fas fa-envelope fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
                       <div class="form-outline flex-fill mb-0">
                         <label class="form-label" for="form_email_id">Your Email</label>
-                        {% if form_data %}
-                          <input type="email" name="email_id" id="form_email_id" class="form-control" value="{{ form_data['email_id'] }}">
-                        {% else %}
-                          <input type="email" name="email_id" id="form_email_id" class="form-control" />
-                        {% endif %}
-                        {% if errors %}
-                          <span class='error-message'>{{ errors['email_id'] }}</span>
-                        {% endif %}
+                        
+                        <input type="email" id="form_email_id" class="form-control" value="{{ email_id }}" disabled>
                       </div>
                     </div>
   
@@ -71,8 +58,8 @@
                       <i class="fas fa-lock fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
                       <div class="form-outline flex-fill mb-0">
                         <label class="form-label" for="form_password">Password</label>
-                        {% if form_data %}
-                          <input type="password" name="password" id="form_password" class="form-control" value="{{ form_data['password'] }}">
+                        {% if password %}
+                          <input type="password" name="password" id="form_password" class="form-control" value="{{ password }}">
                         {% else %}
                           <input type="password" name="password" id="form_password" class="form-control" />
                         {% endif %}
@@ -86,8 +73,8 @@
                       <i class="fas fa-key fa-lg me-3 fa-fw" style="margin-top: auto !important; margin-bottom: 1rem !important;"></i>
                       <div class="form-outline flex-fill mb-0">
                         <label class="form-label" for="form_confirm_password">Repeat your password</label>
-                        {% if form_data %}
-                          <input type="password" name="confirm_password" id="form_confirm_password" class="form-control" value="{{ form_data['confirm_password'] }}">
+                        {% if confirm_password %}
+                          <input type="password" name="confirm_password" id="form_confirm_password" class="form-control" value="{{ confirm_password }}">
                         {% else %}
                           <input type="password" name="confirm_password" id="form_confirm_password" class="form-control" />
                         {% endif %}
@@ -106,6 +93,11 @@
   
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                       <button type="submit" class="btn btn-primary btn-lg">Update</button>
+                      <button type="button" 
+                              onclick="window.location.href='/'" 
+                              class="btn btn-default btn-lg ml-4 bg-light">
+                          Cancel
+                      </button>
                     </div>
   
                   </form>
