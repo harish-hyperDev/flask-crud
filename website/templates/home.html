@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block home_block %}
+<style>
+  tr,
+  th,
+  td {
+    border: 1px solid black;
+    padding: 2px 5px;
+  }
+
+  .admin-body {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 20px;
+  }
+
+  .table {
+    width: 50% !important;
+  }
+
+  .delete-icon,
+  .edit-icon {
+    cursor: pointer;
+    border: 0px !important;
+    background-color: transparent;
+    color: #222 !important;
+    text-decoration: none !important;
+  }
+
+  .delete-hover {
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .delete-hover>button {
+    margin: 10px 0px;
+  }
+</style>
+
+<a href="{{ url_for('add_user') }}">Add User</a>
+<form class="admin-body" method="POST" id="admin-form">
+  <table style="border: 1px solid black;" class="table users-table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Full Name</th>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Edit</th>
+      </tr>
+    </thead>
+    <tbody class="table-body" style="border: 1px solid black;">
+      <!-- Dynamically filled with JS -->
+    </tbody>
+  </table>
+</form>
+
+<script>
+  var toggledDelete;
+
+  function handleDeleteHover(event, DOMid) {
+
+    if (toggledDelete != DOMid && toggledDelete >= 0)
+      $(`#Delete${toggledDelete}`)[0].style.display = "none";
+
+
+    $(`#Delete${DOMid}`)[0].style.transform = "translate(" + (this.event.pageX - 420) + "px," + (this.event.pageY - 150) + "px)"
+    $(`#Delete${DOMid}`)[0].style.display = "block";
+
+    toggledDelete = DOMid;
+  }
+
+  function closeDeleteHover(event, DOMid) {
+    $(`#Delete${DOMid}`)[0].style.display = "none";
+  }
+
+  fetch("http://localhost:5000/get_users")
+    .then(res => res.json())
+    .then(data => {
+
+      let formatData = JSON.parse(data)
+      console.log(formatData.length)
+      for (let i = formatData.length - 1; i >= 0; i--) {
+        $('.table-body')
+          .after(
+            `<tr>
+              <td>${formatData[i]['full_name']}</td>
+              <td>${formatData[i]['username']}</td>
+              <td>${formatData[i]['email']}</td>
+              <td>
+                <a  class="fa-solid fa-trash delete-icon d-flex justify-content-center"
+                    href="#Delete${i}"
+                    data-toggle="collapse"
+                    id=${formatData[i]['id']}
+                    name=id
+                    value=${formatData[i]['id']} 
+                    onclick="handleDeleteHover(event, ${i})"
+                </a>
+              </td>
+              <td>
+                <button  href="#Edit${i}"
+                  class="fa-solid fa-pen-to-square d-flex justify-content-center edit-icon"
+                  name="edit_id"
+                  value=${formatData[i]['id']} >
+                </button>
+              </td>
+          </tr>`
+          )
+        $('.users-table')
+          .after(
+            `<div id="Delete${i}" class="collapse delete-hover">
+              <div>Are you sure want to delete <strong>${formatData[i]['username']} ?</strong></div>
+              <button name=delete_id value=${formatData[i]['id']} >Yes</button>
+              <button type="button" role="button" onclick="closeDeleteHover(event, ${i})">No</button>
+            </div>
+            `
+          )
+      }
+    })
+
+
+</script>
+{% endblock %}
