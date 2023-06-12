@@ -1,6 +1,3 @@
-
-from flask import Flask
-
 from website.app import app, db
 from website.views import validations
 from flask_uuid import uuid
@@ -12,9 +9,9 @@ class TestAddUser:
     
     @pytest.fixture(scope='module')
     def temp_user(self):
-        temp_user_data = {  "full_name": "test1",
-                            "username": "testuser1",
-                            "email_id": "test1@alohatechnology.com",
+        temp_user_data = {  "full_name": "test2",
+                            "username": "testuser2",
+                            "email_id": "test2@alohatechnology.com",
                             "password": "test123",
                             "confirm_password": "test123"
                         }
