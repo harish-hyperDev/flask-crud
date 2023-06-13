@@ -4,12 +4,16 @@ import json
 from .app import app
 from .models import User
 
+# route for returning all users in JSON format
 
-@app.route('/get_users', methods=['GET'])
+@app.route('/get-users', methods=['GET'])
 def get_users():
-    users = User.query.all()
-    users_dict = []
     
+    # GET all users FROM DATABASE
+    users = User.query.all()
+    users_list = []
+    
+    # APPEND all users in list
     for user in users:
         d = {}
         d["id"] = user.id
@@ -17,20 +21,29 @@ def get_users():
         d["full_name"] = user.full_name
         d["email"] = user.email
         
-        users_dict.append(d)
-        
-    return jsonify(json.dumps(users_dict))
+        users_list.append(d)
+    
+    # return users in JSON format
+    return jsonify(json.dumps(users_list))
 
-@app.route('/get_user/<uid>', methods=['GET'])
+
+# route for returning a single user based on 'User ID(uid)' in JSON format
+
+@app.route('/get-user/<uid>', methods=['GET'])
 def get_user_by_id(uid):
+    
+    # FIND user by 'id'
     user = User.query.filter_by( id = uid ).first()
+    
+    # STORE the user in dict format (later parsed as JSON)
     user_dict = {}
     if user:
         user_dict['id'] = user.id
         user_dict['username'] = user.username
         user_dict['full_name'] = user.full_name
         user_dict["email"] = user.email
-    
+
+    # RETURN the found user by 'id' in JSON format
     return jsonify(json.dumps(user_dict))
     
     # return users

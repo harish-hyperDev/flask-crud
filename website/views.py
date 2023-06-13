@@ -1,4 +1,4 @@
-from flask import render_template, session, request, redirect, url_for
+from flask import render_template, request, redirect, url_for
 from flask_uuid import uuid
 
 import time
@@ -7,13 +7,16 @@ from .models import User
 from .app import app, db
 
 
-# route for listing users page
+# route for listing users page(table)
+
 @app.route('/', methods=['GET', 'POST'])
 def admin_home():
     if request.method == "POST":
         
         '''
-        Delete the user if the request.form contains "delete_id" and save changes to database
+        DELETE user by "id"
+        IF the request.form(data from input fields) CONTAINS "delete_id" 
+        AND save changes to DATABASE
         '''
         if 'delete_id' in request.form.to_dict().keys():
             userid_to_delete = request.form.to_dict()['delete_id']
@@ -21,11 +24,11 @@ def admin_home():
             db.session.commit()
         
         '''
-        Edit the user if the request.form contains "edit_id" based on the id of selected user
+        IF the request.form(data from input fields) CONTAINS "edit_id"
+        RETURN template FOR editing user
         '''
         if 'edit_id' in request.form.to_dict().keys():
             userid_to_edit = request.form.to_dict()['edit_id']
-            session['edit_id'] = userid_to_edit
             
             return redirect(url_for('edit_user', edit_id = userid_to_edit))
         
@@ -37,13 +40,24 @@ def admin_home():
 
 
 # route for adding new user(s)
+
 @app.route('/add-user', methods=['GET', 'POST'])
 def add_user():
     if request.method == "POST":
         
         register_fields = request.form.to_dict()
+        
+        # perform validations on data extracted from input fields
         errors = validations(register_fields)
         
+        """
+        IF errors are FOUND
+        RETURN 'add user' template with error messages AND form data
+        
+        ELSE create user by the data extracted FROM input fields
+        AND save changes to DATABASE
+        AND REDIRECT back to home page
+        """
         if errors:
             return render_template('add_user.html', errors = errors, form_data = register_fields)
         
@@ -65,24 +79,38 @@ def add_user():
     return render_template("add_user.html")
 
 
-# route for editing existing user(s)
+# route for editing user(s)
+
 @app.route('/edit-user', methods=['GET', 'POST'])
 def edit_user():
+    
+    # get 'id' of the user to edit
     edit_id = request.args.get('edit_id')
+    
+    # find the user object by 'id'
     edit_user_data = User.query.filter_by(id=edit_id).first()
     
     if request.method == "POST":
         form_data = request.form.to_dict()
         errors = edit_user_validations(form_data)
         
+        """
+        IF errors are FOUND
+        RETURN 'edit user' template with error messages AND form data
+        
+        ELSE edit user by the data extracted FROM input fields
+        AND save changes to DATABASE
+        AND REDIRECT back to home page
+        """
         if errors:
             return render_template('edit_user.html', 
+                                    errors = errors,
                                     full_name = form_data['full_name'],
                                     username = edit_user_data.username,
                                     email_id = edit_user_data.email,
                                     password = form_data['password'],
-                                    confirm_password = form_data['confirm_password'],
-                                    errors = errors)
+                                    confirm_password = form_data['confirm_password'])
+            
         else:
             edit_user_data.full_name = form_data['full_name']
             edit_user_data.password = form_data['password']
@@ -100,6 +128,7 @@ def edit_user():
         
 
 # validations to be perfromed on creating new User
+
 def validations(form_dict):
     errors_dict = {}
     
@@ -108,27 +137,38 @@ def validations(form_dict):
     
     
     for key in form_dict.keys():
+        
+        # Create error message if password and confirm password are NOT same 
         if form_dict['password'] != form_dict['confirm_password']:
             errors_dict['confirm_password'] = "Password mismatch!"
+            
+        # Create error message if any input field is empty
         if form_dict[key].strip() == "":
             errors_dict[key] = "This above field is invalid!"
     
+    # Create error message if given EMAIL ADDRESS is already existing in DATABASE
     if email_exists:
         errors_dict['email_id'] = "This email address has already been used!"
-        
+    
+    # Create error message if given USERNAME is already existing in DATABASE
     if uname_exists:
         errors_dict['username'] = "The given username is already taken!"
     
     return errors_dict
 
 
+# validations to be perfromed while editing User
+
 def edit_user_validations(form_dict):
     errors_dict = {}
 
     for key in form_dict.keys():
+        
+        # Create error message if password and confirm password are NOT same 
         if form_dict['password'] != form_dict['confirm_password']:
             errors_dict['confirm_password'] = "Password mismatch!"
             
+        # Create error message if ANY input field is empty
         if form_dict[key].strip() == "":
             errors_dict[key] = "This above field is invalid!"
             

@@ -1,12 +1,10 @@
-from flask import Flask, session
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from website.config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
-
-# session['API_KEY'] = "flask-insecure?da471aa9-ac0b-4cee-a572-33cbae58043a"
 
 db = SQLAlchemy(app)
 
