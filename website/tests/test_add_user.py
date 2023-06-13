@@ -17,9 +17,17 @@ class TestAddUser:
                         }
         return temp_user_data
     
-    
+    # GET data for creating user from 'temp_user'
     @pytest.mark.dependency()
     def test_form_data_validations(self, temp_user):
+        
+        """
+        CHECK FOR errors on validations
+        IF errors FOUND
+            FAIL Test
+        ELSE
+            PASS Test
+        """
         errors = validations(temp_user)
         
         if errors:
@@ -30,10 +38,17 @@ class TestAddUser:
         else:
             assert True
         
-    
+        """
+        RUN below test only after validations are successful
+        
+        """
     @pytest.mark.dependency(depends=['TestAddUser::test_form_data_validations'])
     def test_add_new_user_to_db(self, temp_user):
         
+        """
+        CREATE USER
+        COMMIT changes to DATABASE
+        """
         user = User(
                 id = "test-id-1",      # the same id is given in tests for edit_user and delete_user
                 full_name = temp_user['full_name'],
@@ -42,9 +57,17 @@ class TestAddUser:
                 password = temp_user['password']
             )
         
+        # COMMITTING changes to DATABASE
         db.session.add(user)
         db.session.commit()
         
+        """
+        IF created user data is SAME as GIVEN data from form data
+            PASS Test
+            
+        ELSE
+            FAIL Test
+        """
         user_created = User.query.filter_by(email = temp_user['email_id'])
         
         if user_created:

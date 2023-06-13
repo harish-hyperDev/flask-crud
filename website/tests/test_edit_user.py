@@ -50,7 +50,7 @@ class TestEditUser:
             CHECK IF changes are SAME as GIVEN data from input fields
         
         ELSE
-            FAIL test
+            FAIL Test
         """
         if edit_user_data:
             edit_user_data.full_name = form_data['full_name']

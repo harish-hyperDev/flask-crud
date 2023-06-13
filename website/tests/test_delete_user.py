@@ -22,7 +22,7 @@ class TestDeleteUser:
             COMMIT changes to DATABASE
         
         ELSE
-            FAIL test
+            FAIL Test
         """
         if found_user.first() is not None:
             found_user.delete()
@@ -30,9 +30,15 @@ class TestDeleteUser:
         else:
             assert False, 'Reason: User not found by ID'
         
+        """
+        IF user has been FOUND with the ID AFTER deletion
+            FAIL Test
+        ELSE
+            PASS Test
+        """
         deleted_user = User.query.filter_by(id=delete_user_id).first()
         if deleted_user is None:
             assert True
         else:
-            assert False
+            assert False, 'Reason: User is not deleted! :('
 
