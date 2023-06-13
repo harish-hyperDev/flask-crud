@@ -18,14 +18,12 @@ def admin_home():
         if 'delete_id' in request.form.to_dict().keys():
             userid_to_delete = request.form.to_dict()['delete_id']
             User.query.filter_by(id=userid_to_delete).delete()
-            print("here")
             db.session.commit()
         
         '''
         Edit the user if the request.form contains "edit_id" based on the id of selected user
         '''
         if 'edit_id' in request.form.to_dict().keys():
-            print(request.form.to_dict()['edit_id'])
             userid_to_edit = request.form.to_dict()['edit_id']
             session['edit_id'] = userid_to_edit
             
@@ -75,9 +73,7 @@ def edit_user():
     
     if request.method == "POST":
         form_data = request.form.to_dict()
-        print(form_data)
         errors = edit_user_validations(form_data)
-        print(errors)
         
         if errors:
             return render_template('edit_user.html', 
