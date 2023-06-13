@@ -1,6 +1,5 @@
 from website.app import db
 from website.views import edit_user_validations
-from flask_uuid import uuid
 from website.models import User
 
 import pytest
