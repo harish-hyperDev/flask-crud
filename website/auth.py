@@ -35,12 +35,12 @@ def token_required(f):
             token = request.headers['Authorization'].split(" ")[1]
         
         if not token:
-            return jsonify({'message': 'Authentication Token is missing!'})
+            return jsonify({'error': 'Unauthorized'}), 401
        
         payload = None
         
         '''
-        Checking token
+        Checking token 
         '''
         if token == JWT_SECRET:
             payload = get_all_users()
@@ -49,8 +49,11 @@ def token_required(f):
             # print("data - ", jwt.decode(data, token, algorithms=["HS256"]))
             
         else:
-            return jsonify({'message': "Token is invalid"})
+            return jsonify({'error': "Token is invalid"}), 401
  
+        '''
+        RETURN 'payload' TO get_users function AS parameter 'users'
+        '''
         return f(payload, *args, **kwargs)
     return decorator
 
@@ -61,11 +64,4 @@ def token_required(f):
 @token_required
 def get_users(users):
     # return users in JSON format
-    return jsonify(json.dumps(users))
-
-
-@app.route('/test', methods=['GET'])
-@token_required
-def test(tk):
-    return tk
-    # return jsonify({'message': 'hello'})
+    return jsonify(users), 200
