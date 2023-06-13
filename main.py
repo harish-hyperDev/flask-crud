@@ -1,6 +1,6 @@
 from website.app import app
 import website.views
-import website.api
+import website.auth
 
 
 if __name__ == '__main__':

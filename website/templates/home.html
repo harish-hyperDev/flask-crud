@@ -102,7 +102,11 @@
     $(`#Delete${DOMid}`)[0].style.display = "none";
   }
 
-  fetch("http://localhost:5000/get-users")
+  fetch("http://localhost:5000/get-users", {
+    headers: {
+      'Authorization': 'Bearer {{token}}'
+    }
+  })
     .then(res => res.json())
     .then(data => {
 

@@ -11,12 +11,14 @@ from .app import app, db
 
 @app.route('/', methods=['GET', 'POST'])
 def admin_home():
+    
+    AUTH_HEADER = app.config['SECRET_KEY']
     if request.method == "POST":
         
         '''
-        DELETE user by "id"
         IF the request.form(data from input fields) CONTAINS "delete_id" 
-        AND COMMIT changes to DATABASE
+        DELETE user by "id"
+        COMMIT changes to DATABASE
         '''
         if 'delete_id' in request.form.to_dict().keys():
             userid_to_delete = request.form.to_dict()['delete_id']
@@ -33,10 +35,10 @@ def admin_home():
             return redirect(url_for('edit_user', edit_id = userid_to_edit))
         
             
-        return render_template('/home.html')
+        return render_template('/home.html', token=AUTH_HEADER)
         
     else:
-        return render_template('/home.html')
+        return render_template('/home.html', token=AUTH_HEADER)
 
 
 # route for adding new user(s)
@@ -55,8 +57,8 @@ def add_user():
         RETURN 'add user' template with error messages AND form data
         
         ELSE create user by the data extracted FROM input fields
-        AND COMMIT changes to DATABASE
-        AND REDIRECT back to home page
+        COMMIT changes to DATABASE
+        REDIRECT back to home page
         """
         if errors:
             return render_template('add_user.html', errors = errors, form_data = register_fields)

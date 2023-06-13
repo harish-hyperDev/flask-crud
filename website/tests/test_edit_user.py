@@ -47,7 +47,7 @@ class TestEditUser:
         IF user has been found BY id
             EDIT user data
             COMMIT changes to DATABASE
-            CHECK IF changes are SAME as GIVEN data from input fields
+            ASSERT IF changes are SAME as GIVEN data from input fields
         
         ELSE
             FAIL Test
