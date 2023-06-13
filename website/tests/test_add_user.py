@@ -9,9 +9,9 @@ class TestAddUser:
     
     @pytest.fixture(scope='module')
     def temp_user(self):
-        temp_user_data = {  "full_name": "test2",
-                            "username": "testuser2",
-                            "email_id": "test2@alohatechnology.com",
+        temp_user_data = {  "full_name": "test1",
+                            "username": "testuser1",
+                            "email_id": "test1@alohatechnology.com",
                             "password": "test123",
                             "confirm_password": "test123"
                         }
@@ -35,7 +35,7 @@ class TestAddUser:
     def test_add_new_user_to_db(self, temp_user):
         
         user = User(
-                id = uuid.uuid4().hex,      # for unique user id
+                id = "test-id-1",      
                 full_name = temp_user['full_name'],
                 username = temp_user['username'],
                 email = temp_user['email_id'],

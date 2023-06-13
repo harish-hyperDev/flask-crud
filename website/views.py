@@ -16,7 +16,7 @@ def admin_home():
         '''
         DELETE user by "id"
         IF the request.form(data from input fields) CONTAINS "delete_id" 
-        AND save changes to DATABASE
+        AND COMMIT changes to DATABASE
         '''
         if 'delete_id' in request.form.to_dict().keys():
             userid_to_delete = request.form.to_dict()['delete_id']
@@ -55,7 +55,7 @@ def add_user():
         RETURN 'add user' template with error messages AND form data
         
         ELSE create user by the data extracted FROM input fields
-        AND save changes to DATABASE
+        AND COMMIT changes to DATABASE
         AND REDIRECT back to home page
         """
         if errors:
@@ -99,7 +99,7 @@ def edit_user():
         RETURN 'edit user' template with error messages AND form data
         
         ELSE edit user by the data extracted FROM input fields
-        AND save changes to DATABASE
+        AND COMMIT changes to DATABASE
         AND REDIRECT back to home page
         """
         if errors:
