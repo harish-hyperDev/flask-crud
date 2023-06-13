@@ -34,10 +34,11 @@ def admin_home():
             
             return redirect(url_for('edit_user', edit_id = userid_to_edit))
         
-            
+        # SENDING AUTH TOKEN to home template for fetching data from API
         return render_template('/home.html', token=AUTH_HEADER)
         
     else:
+        # SENDING AUTH TOKEN to home template for fetching data from API
         return render_template('/home.html', token=AUTH_HEADER)
 
 

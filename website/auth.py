@@ -1,13 +1,11 @@
 from flask import jsonify, request
 from functools import wraps
 
-import json
-
 from .app import app
 from .models import User
 
 
-JWT_SECRET = app.config['SECRET_KEY']
+AUTH_SECRET = app.config['SECRET_KEY']
 
 # return all users in JSON format
 def get_all_users():
@@ -25,7 +23,7 @@ def get_all_users():
     return users
 
 """
-Function for verifying the JWT Token and return data
+Function for verifying the Auth Token and return data
 """
 def token_required(f):
     @wraps(f)
@@ -42,11 +40,8 @@ def token_required(f):
         '''
         Checking token 
         '''
-        if token == JWT_SECRET:
+        if token == AUTH_SECRET:
             payload = get_all_users()
-            
-            # data = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
-            # print("data - ", jwt.decode(data, token, algorithms=["HS256"]))
             
         else:
             return jsonify({'error': "Token is invalid"}), 401
