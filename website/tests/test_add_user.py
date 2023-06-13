@@ -1,9 +1,9 @@
-from website.app import app, db
+from website.app import db
 from website.views import validations
 from flask_uuid import uuid
 from website.models import User
 
-import pytest, time
+import pytest
 
 class TestAddUser:
     
@@ -19,7 +19,7 @@ class TestAddUser:
     
     
     @pytest.mark.dependency()
-    def test_validations(self, temp_user):
+    def test_form_data_validations(self, temp_user):
         errors = validations(temp_user)
         
         if errors:
@@ -31,8 +31,8 @@ class TestAddUser:
             assert True
         
     
-    @pytest.mark.dependency(depends=['TestAddUser::test_validations'])
-    def test_add_user(self, temp_user):
+    @pytest.mark.dependency(depends=['TestAddUser::test_form_data_validations'])
+    def test_add_new_user_to_db(self, temp_user):
         
         user = User(
                 id = uuid.uuid4().hex,      # for unique user id
