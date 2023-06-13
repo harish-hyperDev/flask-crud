@@ -22,16 +22,15 @@ class TestDeleteUser:
             COMMIT changes to DATABASE
         
         ELSE
-            SKIP test
+            FAIL test
         """
         if found_user.first() is not None:
             found_user.delete()
             db.session.commit()
         else:
-            pytest.skip(reason='User not found by ID')
+            assert False, 'Reason: User not found by ID'
         
         deleted_user = User.query.filter_by(id=delete_user_id).first()
-        print(deleted_user)
         if deleted_user is None:
             assert True
         else:

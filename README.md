@@ -22,4 +22,4 @@ The app can be run with the command
 The tests for this app are written with **pytest**
 The tests are advised to be run with the command
 
-    python3 -m pytest -vv -s website/tests/test_*.py
+    python3 -m pytest -vv website/tests/<test_name>.py

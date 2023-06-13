@@ -50,7 +50,7 @@ class TestEditUser:
             CHECK IF changes are SAME as GIVEN data from input fields
         
         ELSE
-            SKIP test
+            FAIL test
         """
         if edit_user_data:
             edit_user_data.full_name = form_data['full_name']
@@ -64,6 +64,5 @@ class TestEditUser:
             assert after_edit.password == form_data['password']
             
         else:
-            pytest.skip(reason='User not found by ID')
-            
+            assert False, 'Reason: User not found by ID'
 
