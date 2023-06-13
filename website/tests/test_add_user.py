@@ -35,7 +35,7 @@ class TestAddUser:
     def test_add_new_user_to_db(self, temp_user):
         
         user = User(
-                id = "test-id-1",      
+                id = "test-id-1",      # the same id is given in tests for edit_user and delete_user
                 full_name = temp_user['full_name'],
                 username = temp_user['username'],
                 email = temp_user['email_id'],
